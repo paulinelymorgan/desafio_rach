@@ -3,6 +3,7 @@ import pandas as pd
 import seaborn as sns
 from collections import Counter
 import matplotlib.pyplot as plt
+import datetime
 # %matplotlib inline
 
 # Warnings
@@ -34,52 +35,79 @@ import string
 import spacy
 # nlp = spacy.load("en")
 
-base = pd.read_csv('/Users/paulinelymorgan/Google Drive/comRaquel/desafio/sms_senior.csv', encoding = "ISO-8859-1")
-# df = pd.read_csv('/Users/paulinelymorgan/Google Drive/comRaquel/desafio/sms_senior.csv', encoding = "latin")
 
-#### infomacoes da base
-# base.info()
-#### infomacoes da base
+### carregando dados
+endereco_arquivo = "/Users/paulinelymorgan/git/desafio_rach/desafio/sms_senior.csv"
+base = pd.read_csv(endereco_arquivo, encoding = "ISO-8859-1")
+### carregando dados
+
+### infomacoes da base
+print()
+base.info()
+### infomacoes da base
+
+def grafico_barras(minhaBase, titulo, x_label, y_label, legenda, opacity):
+
+    ocorrencias = [x[1] for x in minhaBase]
+    palavras = [x[0] for x in minhaBase]
+    # fig, ax = plt.subplots()
+    plt.subplots()
+    index = np.arange(len(minhaBase))
+    bar_width = 0.25
+    plt.bar(index, ocorrencias, bar_width, alpha=opacity, color='b', label=legenda)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.title(titulo)
+    plt.xticks(index + bar_width, palavras)
+    plt.legend()
+
+    plt.tight_layout()
+    plt.show()
+
 
 #### plotar grafico da classificacao em formato de pizza
 print("\nquantidade classificacoes: ")
 print(base['IsSpam'].value_counts())
 
 # grafico
-base["IsSpam"].value_counts().plot(kind = 'pie', explode = [0, 0.1], figsize = (6, 6), autopct = '%1.1f%%', shadow = False, label= 'classes')
-plt.ylabel("COMUNS vs SPAMS")
-plt.legend(["COMUNS", "SPAMS"])
-plt.title("Mensagens COMUNS vs SPAMS")
-plt.show()
+# base["IsSpam"].value_counts().plot(kind = 'pie', explode = [0, 0.1], figsize = (6, 6), autopct = '%1.1f%%', shadow = False, label= 'classes')
+# plt.ylabel("COMUNS vs SPAMS")
+# plt.legend(["COMUNS", "SPAMS"])
+# plt.title("Mensagens COMUNS vs SPAMS")
+# plt.show()
+
 #### plotar grafico da classificacao em formato de pizza
 
-#### palavras mais frequentes
-qntPalavras = 20
+
+#### QUESTAO 1 - palavras mais frequentes
+qntPalavras = 25
 palavras = Counter(" ".join(base["Full_Text"]).split()).most_common(qntPalavras)
 print("\n{} palavras mais frequentes: ".format(qntPalavras))
 print(palavras)
 
-# grafico
-tamanho = len(palavras)
-ocorrencias = [x[1] for x in palavras]
-palavras = [x[0] for x in palavras]
-fig, ax = plt.subplots()
-index = np.arange(tamanho)
-bar_width = 0.25
-opacity = 0.4
+# grafico de barras
+# grafico_barras(palavras, '{} Palavras mais frequentes'.format(qntPalavras),
+    # 'Palavras', 'Ocorrencias', 'Ocorrencias', 0.5)
 
-plt.bar(index, ocorrencias, bar_width,
-                 alpha=opacity,
-                 color='b',
-                 label='Ocorrencias')
+#### QUESTAO 1 - palavras mais frequentes
 
-plt.xlabel('Palavras')
-plt.ylabel('Ocorrencias')
-plt.title('{} Palavras mais frequentes'.format(qntPalavras))
-plt.xticks(index + bar_width, palavras)
-plt.legend()
 
-plt.tight_layout()
-plt.show()
-#### palavras mais frequentes
+#### QUESTAO 2 - palavras mais frequentes por mes
+print("por mes: ")
 
+# extraindo apenas os tres parametros
+novaBase = pd.DataFrame({'Timestamp': pd.to_datetime(base.Date), 'Texto': base.Full_Text, 'IsSpam': base.IsSpam})
+
+# criando um novo parametro (mes/ano)
+novaBase['Month/Year'] = novaBase['Timestamp'].apply(lambda x: "%d/%d" % (x.month, x.year))
+
+# print(novaBase)
+
+#
+agrupado_mes = novaBase.groupby(['Month/Year', 'IsSpam']).size()
+print(agrupado_mes)
+# agrupado_mes.plot(kind = 'pie', explode = [0, 0.1], figsize = (6, 6), autopct = '%1.1f%%', shadow = False, label= 'classes')
+# plt.ylabel("agrupados")
+# plt.legend(["COMUNS", "SPAMS"])
+# plt.title("Agrupado")
+# plt.show()
