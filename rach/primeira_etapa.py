@@ -83,3 +83,7 @@ plt.tight_layout()
 plt.show()
 #### palavras mais frequentes
 
+
+#Separando por mês
+
+
