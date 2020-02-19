@@ -34,8 +34,8 @@ import string
 import spacy
 # nlp = spacy.load("en")
 
-base = pd.read_csv('/Users/paulinelymorgan/Google Drive/comRaquel/desafio/sms_senior.csv', encoding = "ISO-8859-1")
-# df = pd.read_csv('/Users/paulinelymorgan/Google Drive/comRaquel/desafio/sms_senior.csv', encoding = "latin")
+base = pd.read_csv('C:/Users/Ana Raquel/Senior/desafio/sms_senior.csv', encoding = "ISO-8859-1")
+# df = pd.read_csv('C:/Users/Ana Raquel/Senior/desafio/sms_senior.csv', encoding = "latin")
 
 #### infomacoes da base
 # base.info()
@@ -83,7 +83,52 @@ plt.tight_layout()
 plt.show()
 #### palavras mais frequentes
 
-
 #Separando por mês
 
+#base.loc[x, 'Date']
 
+def defineMounth(data):
+    jan = '01'
+    fev = '02'
+    mar = '03'
+    abr = '04'
+    mai = '05'
+    jun = '06'
+    jul = '07'
+    ago = '08'
+    sete = '09'
+    out = '10'
+    nov = '11'
+    dez = '12'
+
+    if data[5] == jan[0] and data[6] == jan[1] :
+        return 'Janeiro'
+    elif data[5] == fev[0] and data[6] == fev[1]:
+        return 'Fevereiro'
+    elif data[5] == mar[0] and data[6] == mar[1]:
+        return 'Março'
+    elif data[5] == abr[0] and data[6] == abr[1]:
+        return 'Abril'
+    elif data[5] == mai[0] and data[6] == mai[1]:
+        return 'Maio'
+    elif data[5] == jun[0] and data[6] == jun[1]:
+        return 'Junho'
+    elif data[5] == jul[0] and data[6] == jul[1]:
+        return 'Julho'
+    elif data[5] == ago[0] and data[6] == ago[1]:
+        return 'Agosto'
+    elif data[5] == sete[0] and data[6] == sete[1]:
+        return 'Setembro'
+    elif data[5] == out[0] and data[6] == out[1]:
+        return 'Outubro'
+    elif data[5] == nov[0] and data[6] == nov[1]:
+        return 'Novembro'
+    elif data[5] == dez[0] and data[6] == dez[1]:
+        return 'Dezembro'
+    else:
+        return 'data inválida'
+
+base['Mounth'] = base['Date'].apply(defineMounth)
+
+#print(base. tail())
+     
