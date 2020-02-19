@@ -35,11 +35,12 @@ import string
 import spacy
 # nlp = spacy.load("en")
 
-
 ### carregando dados
 endereco_arquivo = "/Users/paulinelymorgan/git/desafio_rach/desafio/sms_senior.csv"
 base = pd.read_csv(endereco_arquivo, encoding = "ISO-8859-1")
 ### carregando dados
+
+gerarGraficos = False
 
 ### infomacoes da base
 print()
@@ -70,11 +71,13 @@ print("\nquantidade classificacoes: ")
 print(base['IsSpam'].value_counts())
 
 # grafico
-# base["IsSpam"].value_counts().plot(kind = 'pie', explode = [0, 0.1], figsize = (6, 6), autopct = '%1.1f%%', shadow = False, label= 'classes')
-# plt.ylabel("COMUNS vs SPAMS")
-# plt.legend(["COMUNS", "SPAMS"])
-# plt.title("Mensagens COMUNS vs SPAMS")
-# plt.show()
+
+if gerarGraficos:
+    base["IsSpam"].value_counts().plot(kind = 'pie', explode = [0, 0.1], figsize = (6, 6), autopct = '%1.1f%%', shadow = False, label= 'classes')
+    plt.ylabel("COMUNS vs SPAMS")
+    plt.legend(["COMUNS", "SPAMS"])
+    plt.title("Mensagens COMUNS vs SPAMS")
+    plt.show()
 
 #### plotar grafico da classificacao em formato de pizza
 
@@ -86,8 +89,10 @@ print("\n{} palavras mais frequentes: ".format(qntPalavras))
 print(palavras)
 
 # grafico de barras
-# grafico_barras(palavras, '{} Palavras mais frequentes'.format(qntPalavras),
-    # 'Palavras', 'Ocorrencias', 'Ocorrencias', 0.5)
+
+if gerarGraficos:
+    grafico_barras(palavras, '{} Palavras mais frequentes'.format(qntPalavras),
+        'Palavras', 'Ocorrencias', 'Ocorrencias', 0.5)
 
 #### QUESTAO 1 - palavras mais frequentes
 
@@ -100,14 +105,16 @@ novaBase = pd.DataFrame({'Timestamp': pd.to_datetime(base.Date), 'Texto': base.F
 
 # criando um novo parametro (mes/ano)
 novaBase['Month/Year'] = novaBase['Timestamp'].apply(lambda x: "%d/%d" % (x.month, x.year))
-
 # print(novaBase)
 
-#
-agrupado_mes = novaBase.groupby(['Month/Year', 'IsSpam']).size()
-print(agrupado_mes)
-# agrupado_mes.plot(kind = 'pie', explode = [0, 0.1], figsize = (6, 6), autopct = '%1.1f%%', shadow = False, label= 'classes')
-# plt.ylabel("agrupados")
-# plt.legend(["COMUNS", "SPAMS"])
-# plt.title("Agrupado")
-# plt.show()
+# agrupa pelos dois parametros (o novo gerado e 'IsSpam')
+agrupado_mes = novaBase.groupby(['Month/Year', 'IsSpam'])
+
+# agrega com o tamanho
+classificacoes_por_mes = agrupado_mes.size()
+print(classificacoes_por_mes)
+
+#### QUESTAO 2 - palavras mais frequentes por mes
+
+
+#### QUESTAO 3 - palavras mais frequentes por mes
