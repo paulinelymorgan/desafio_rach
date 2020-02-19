@@ -1,0 +1,9 @@
+questao 2: 
+Month/Year  IsSpam
+1/2017      no        1687
+            yes        266
+2/2017      no        1512
+            yes        244
+3/2017      no        1628
+            yes        237
+dtype: int64
