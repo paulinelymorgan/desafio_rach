@@ -10,7 +10,7 @@ base_comum = base.loc[base['IsSpam'] == 'comum']
 #### QUESTAO 4 - dia
 print("questao 4: ")
 
-# extraindo apenas os tres parametros da base, com classificacao 'comum'
+# extraindo apenas os dois parametros da base, com classificacao 'comum'
 questao4 = pd.DataFrame({'Date': pd.to_datetime(base_comum.Date), 'IsSpam': base_comum.IsSpam})
 
 # criando dois novos parametros
@@ -18,9 +18,9 @@ questao4['Day/Month'] = questao4['Date'].apply(lambda x: "%d/%d" % (x.day, x.mon
 questao4['Month'] = questao4['Date'].apply(lambda x: "%d" % (x.month))
 
 # separa por mes
-comum_mes_1 = questao4.loc[(questao4['IsSpam'] == 'comum') & (questao4['Month'] == '1')]
-comum_mes_2 = questao4.loc[(questao4['IsSpam'] == 'comum') & (questao4['Month'] == '2')]
-comum_mes_3 = questao4.loc[(questao4['IsSpam'] == 'comum') & (questao4['Month'] == '3')]
+comum_mes_1 = questao4.loc[(questao4['Month'] == '1')]
+comum_mes_2 = questao4.loc[(questao4['Month'] == '2')]
+comum_mes_3 = questao4.loc[(questao4['Month'] == '3')]
 
 # agrupa pelos dois parametros
 agrupado_mes_1 = comum_mes_1.groupby(['Day/Month', 'IsSpam'])
